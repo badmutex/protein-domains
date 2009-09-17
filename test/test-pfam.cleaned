@@ -1,0 +1,10 @@
+MkProteinDomain {protein = Protein "Q4U9M9", aliases = [Protein "104K_THEAN"], domains = [Domain "FAINT "]}
+MkProteinDomain {protein = Protein "P15711", aliases = [Protein "104K_THEPA"], domains = [Domain "FAINT "]}
+MkProteinDomain {protein = Protein "Q43495", aliases = [Protein "108_SOLLC"], domains = [Domain "Tryp_alpha_amyl "]}
+MkProteinDomain {protein = Protein "P18646", aliases = [Protein "10KD_VIGUN"], domains = [Domain "Gamma-thionin "]}
+MkProteinDomain {protein = Protein "Q9XHP0", aliases = [Protein "11S2_SESIN"], domains = [Domain "Cupin_1 "]}
+MkProteinDomain {protein = Protein "P19084", aliases = [Protein "11S3_HELAN"], domains = [Domain "Cupin_1 "]}
+MkProteinDomain {protein = Protein "P13744", aliases = [Protein "11SB_CUCMA"], domains = [Domain "Cupin_1 "]}
+MkProteinDomain {protein = Protein "P32234", aliases = [Protein "128UP_DROME"], domains = [Domain "TGS ",Domain "MMR_HSR1 "]}
+MkProteinDomain {protein = Protein "Q05349", aliases = [Protein "12KD_FRAAN"], domains = [Domain "Auxin_repressed "]}
+MkProteinDomain {protein = Protein "P15455", aliases = [Protein "12S1_ARATH"], domains = [Domain "Cupin_1 "]}

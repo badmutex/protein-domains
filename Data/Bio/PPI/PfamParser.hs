@@ -22,7 +22,9 @@ import qualified Data.Bio.PPI.ProteinDomains as PD
 import Text.Parsec
 import Text.Parsec.ByteString.Lazy
 import Control.Monad
-import qualified Data.ByteString.Lazy as BS
+import qualified Data.ByteString.Lazy.Char8 as BS
+import System.IO.Unsafe
+import Data.List
 
 validName :: Parser String
 validName = many (alphaNum <|> char '_' <|> char '-')
@@ -68,6 +70,23 @@ translatePfam = fmap (parse translatePfamToProteinDomain "")
 
 
 translatePfam' :: IO BS.ByteString -> IO ()
-translatePfam' gen = let fixer (Left e)    = error $ "[translatePfam'] " ++ show e
-                         fixer (Right pds) = foldM_ (\_ pd -> print pd) () pds
-                     in translatePfam gen >>= fixer
+translatePfam' gen = translatePfam gen >>= fixer
+
+fixer :: Either ParseError [PD.ProteinDomain] -> IO ()
+fixer = undefined
+-- fixer (Right pds) = foldl1' (\_ pd -> let !pd' = pd in print pd') pds
+-- fixer (Left e)    = error $ "[translatePfam'] " ++ show e
+--fixer (Right pds) = return $ foldl' (\_ pd -> unsafePerformIO $ print pd) undefined pds
+  
+
+
+work :: PD.ProteinDomain -> String -> IO PD.ProteinDomain
+work pd " " = print pd >> return pd
+work _ ('>':p) = return $ PD.ProteinDomain { PD.protein = Protein {proteinPfamID = PfamID p}
+                                           , PD.domains = []}
+          where (pfam:rest) = words p
+work pd d = return pd { PD.domains = Domain { domainName = CommonName d }
+                                     : PD.domains pd }
+
+translatePfam'' :: IO String -> IO ()
+translatePfam'' gen = gen >>= foldM_ work undefined . tail . lines

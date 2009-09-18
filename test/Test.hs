@@ -11,6 +11,8 @@ import System.Environment
 
 pfamData = "test/test.pfam"
 
-test = translatePfam' (BS.readFile pfamData)
+test = translatePfam'' (readFile pfamData)
 
-main = getArgs >>= translatePfam' . BS.readFile . head
+
+
+main = getArgs >>= translatePfam'' . readFile . head

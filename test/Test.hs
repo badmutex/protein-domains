@@ -5,13 +5,12 @@ import Data.Bio.PPI.ProteinDomains
 import Data.Bio.PPI.ProteinSpecies
 import Data.Bio.PPI.PfamParser
 
-import Text.ParserCombinators.Parsec
+import Text.Parsec
+import qualified Data.ByteString.Lazy as BS
 import System.Environment
 
 pfamData = "test/test.pfam"
 
-test = translatePfam' (readFile pfamData)
+test = translatePfam' (BS.readFile pfamData)
 
-main = translatePfam' getContents
-  
-  
+main = getArgs >>= translatePfam' . BS.readFile . head

@@ -19,7 +19,10 @@ module Data.Bio.PPI.PfamParser where
 import Data.Bio.PPI.Types
 import qualified Data.Bio.PPI.ProteinDomains as PD
 
-import Text.ParserCombinators.Parsec
+import Text.Parsec
+import Text.Parsec.ByteString.Lazy
+import Control.Monad
+import qualified Data.ByteString.Lazy as BS
 
 validName :: Parser String
 validName = many (alphaNum <|> char '_' <|> char '-')
@@ -60,11 +63,11 @@ translatePfamToProteinDomain = spaces >> proteinAndDomains `manyTill` eof
 -- or
 --
 -- > translatePfam (readFile "foo.pfam")
-translatePfam :: IO String -> IO (Either ParseError [PD.ProteinDomain])
+translatePfam :: IO BS.ByteString -> IO (Either ParseError [PD.ProteinDomain])
 translatePfam = fmap (parse translatePfamToProteinDomain "")
 
 
-translatePfam' :: IO String -> IO ()
+translatePfam' :: IO BS.ByteString -> IO ()
 translatePfam' gen = let fixer (Left e)    = error $ "[translatePfam'] " ++ show e
-                         fixer (Right pds) = mapM_ print pds
+                         fixer (Right pds) = foldM_ (\_ pd -> print pd) () pds
                      in translatePfam gen >>= fixer

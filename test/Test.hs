@@ -1,14 +1,17 @@
 module Main where
 
 import Data.Bio.PPI.Types
-import Data.Bio.PPI.Instances
-import qualified Data.Bio.PPI.ProteinDomains as PD
+import Data.Bio.PPI.ProteinDomains
+import Data.Bio.PPI.ProteinSpecies
+import Data.Bio.PPI.PfamParser
 
+import Text.ParserCombinators.Parsec
+import System.Environment
 
-readProteinDomain :: (Read a, ProteinDomain a) => String -> a
-readProteinDomain = read
+pfamData = "test/test.pfam"
 
-readPD :: String -> PD.ProteinDomain
-readPD = readProteinDomain
+test = translatePfam' (readFile pfamData)
 
-main = getContents >>= mapM_ (putStrLn . show . readPD) . lines
+main = translatePfam' getContents
+  
+  

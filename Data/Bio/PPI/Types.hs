@@ -1,16 +1,52 @@
+{-# LANGUAGE
+  MultiParamTypeClasses
+  , TypeSynonymInstances
+  #-}
+
 module Data.Bio.PPI.Types where
 
-data Protein = Protein String deriving (Eq, Read, Show)
-data Domain  = Domain  String deriving (Eq, Read, Show)
+import Data.From
+
+class Relation a b c where
+    source :: c -> a
+    others :: c -> [b]
 
 
-class ProteinDomain a where
-    protein :: a -> Protein
-    aliases :: a -> [Protein]
-    domains :: a -> [Domain]
+class Name a where
+    name :: a -> CommonName
 
-
-data Species = MkSpecies String deriving (Eq, Read, Show)
+class Pfam a where
+    pfamID :: a -> PfamID
 
 
 
+newtype PfamID     = PfamID     String deriving (Eq, Read, Show)
+newtype CommonName = CommonName String deriving (Eq, Read, Show)
+
+instance From PfamID     String where from (PfamID s)     = s
+instance From CommonName String where from (CommonName s) = s
+
+
+data Protein = Protein {
+      proteinPfamID :: PfamID
+    } deriving (Eq, Read, Show)
+
+instance Pfam Protein where pfamID = proteinPfamID
+
+
+data Domain = Domain {
+      domainName   :: CommonName
+--    , domainPfamID :: PfamID
+    } deriving (Eq, Read, Show)
+
+instance Name Domain where name   = domainName
+-- instance Pfam Domain where pfamID = domainPfamID
+
+
+type Genus   = String
+type Species = String
+
+data Organism = Organism {
+      genus   :: Genus
+    , species :: Species
+    } deriving (Eq, Read, Show)

@@ -1,14 +1,16 @@
+{-# LANGUAGE MultiParamTypeClasses #-}
+
 module Data.Bio.PPI.ProteinDomains where
 
-import qualified Data.Bio.PPI.Types as PD (ProteinDomain(..))
-import Data.Bio.PPI.Types hiding (ProteinDomain)
+import Data.Bio.PPI.Types
 
-data ProteinDomain = MkProteinDomain {
+
+data ProteinDomain = ProteinDomain {
       protein :: Protein
-    , aliases :: [Protein]
     , domains :: [Domain]
     } deriving (Eq, Read, Show)
 
 
-
-
+instance Relation Protein Domain ProteinDomain where
+    source = protein
+    others = domains
